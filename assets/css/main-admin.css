@@ -1,10 +1,27 @@
 .xr-image-prev {
     display: block;
     margin-bottom: 10px;
+    max-width: 100px;
 }
 
 textarea {
 	height: 200px;
+}
+input[type=text] {
+	width: 300px;
+}
+input[type=text] , textarea {
+	padding: .5em;
+}
+
+.meta-title {
+	font-weight: bold;
+}
+.meta-description {
+    color: #797979;
+}
+.form-group {
+    padding: .5em 0;
 }
 
 .wrap .form-table th {

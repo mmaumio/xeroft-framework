@@ -67,14 +67,12 @@ class Xeroft_Framework extends Xeroft_Framework_Helper {
             add_action( 'admin_init', array($this, 'settings_api') );
             add_action( 'admin_menu', array($this, 'admin_menu') );
             foreach ( $this->options as $option) {
-                if ( isset( $option['is_meta'] ) && $option['is_meta'] === true ) {
+                if ( isset( $option['is_meta'] ) && $option['is_meta'] == true ) {
                     add_action( 'add_meta_boxes', array( $this, 'register_meta_options' ) );
                     add_action( 'save_post', array( $this, 'save_metabox' ) );
                 }
             }        
         }
-
-
     }
 
 
@@ -116,8 +114,8 @@ class Xeroft_Framework extends Xeroft_Framework_Helper {
 
 
     public function field_meta_callback( $post, $field ) {
+        wp_nonce_field( 'xr_nonce_action', 'xr_nonce' );
         foreach( $field['args']['fields'] as $field_value ) {
-            wp_nonce_field( 'xr_nonce_action', 'xr_nonce' );
             call_user_func( array(&$this, 'add_meta_' . $field_value['type'] . '_field'), $post, $field_value );
         }
     }
@@ -128,7 +126,7 @@ class Xeroft_Framework extends Xeroft_Framework_Helper {
     */
     public function register_meta_options() {
         foreach ($this->options as $field_key => $field ) {
-            if ( isset( $field['is_meta'] ) && $field['is_meta'] === true ) {
+            if ( isset( $field['is_meta'] ) && $field['is_meta'] == true ) {
                 add_meta_box( $field['name'] . '_meta', $field['title'], array(&$this, 'field_meta_callback' ), $field['post_type'], $field['context'], 'default', $field );
             }
         }
@@ -176,12 +174,19 @@ class Xeroft_Framework extends Xeroft_Framework_Helper {
         
         $post_meta_array = array();
         foreach ($this->options as $field) {
-            foreach ( $field['fields'] as $value) { 
-                $post_value = 'xr_meta_options_' . $value['id'];
-                $post_meta_array['_xr_meta_key_' . $value['id']] = isset( $_POST[$post_value] ) ? $_POST[$post_value] : '';
-                foreach ($post_meta_array as $meta_key => $meta_value) {
-                    update_post_meta( $post_id, $meta_key, $meta_value );
-                }   
+            if ( isset( $field['is_meta'] ) && $field['is_meta'] == true ) {
+                foreach ( $field['fields'] as $value) { 
+                    $post_value = 'xr_meta_options_' . $value['id'];
+                    $post_meta_array['_xr_meta_key_' . $value['id']] = isset( $_POST[$post_value] ) ? $_POST[$post_value] : '';
+                    foreach ($post_meta_array as $meta_key => $meta_value) {
+                        /*$old_meta = get_post_meta( $post_id, $meta_key, false); */
+                        if ( empty( $meta_value ) || ! $meta_value ) {
+                            delete_post_meta( $post_id, $meta_key, $meta_value );
+                        } else {    
+                            update_post_meta( $post_id, $meta_key, $meta_value );
+                        }
+                    }   
+                }
             }
         }
         
