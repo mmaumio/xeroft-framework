@@ -34,7 +34,7 @@ class Xeroft_Framework_Helper extends Xeroft_Framework_Abstract {
     // Add text Field
     public function add_text_field($field) { ?>
         <p><strong><?php echo $field['title']; ?></strong></p>
-        <input id="<?php echo $field['id']; ?>_id" type="text" name="xr_options[<?php echo $field['id']; ?>]" value="<?php ( isset($this->get_option[$field['id']]) ? $this->get_option[$field['id']] : '' ); ?>"/>
+        <input class="xr-text-input" id="<?php echo $field['id']; ?>_id" type="text" name="xr_options[<?php echo $field['id']; ?>]" value="<?php ( isset($this->get_option[$field['id']]) ? $this->get_option[$field['id']] : '' ); ?>"/>
     <?php
     }
 
@@ -134,7 +134,7 @@ class Xeroft_Framework_Helper extends Xeroft_Framework_Abstract {
     public function add_meta_text_field($post, $field) { ?>
         <div class="form-group">
             <p class="meta-title"><?php if ( isset( $field['title'] ) ) echo $field['title']; ?></p>
-            <input id="<?php echo $field['id']; ?>_id" type="text" name="xr_meta_options_<?php echo $field['id']; ?>" value="<?php echo get_post_meta( $post->ID, '_xr_meta_key_' . $field['id'], true ); ?>" />
+            <input class="xr-text-input" id="<?php echo $field['id']; ?>_id" type="text" name="xr_meta_options_<?php echo $field['id']; ?>" value="<?php echo get_post_meta( $post->ID, '_xr_meta_key_' . $field['id'], true ); ?>" />
             <p class="meta-description"><?php if ( isset( $field['description'] ) ) echo $field['description']; ?></p>
         </div>
     
@@ -156,7 +156,7 @@ class Xeroft_Framework_Helper extends Xeroft_Framework_Abstract {
     public function add_meta_url_field($post, $field) { ?>
         <div class="form-group">
             <p class="meta-title"><?php if ( isset( $field['title'] ) ) echo $field['title']; ?></p>
-            <input id="<?php echo $field['id']; ?>_id" type="text" name="xr_meta_options_<?php echo $field['id']; ?>" value="<?php echo esc_url( get_post_meta( $post->ID, '_xr_meta_key_' . $field['id'], true ) ); ?>" />
+            <input class="xr-text-input" id="<?php echo $field['id']; ?>_id" type="text" name="xr_meta_options_<?php echo $field['id']; ?>" value="<?php echo esc_url( get_post_meta( $post->ID, '_xr_meta_key_' . $field['id'], true ) ); ?>" />
             <p class="meta-description"><?php if ( isset( $field['description'] ) ) echo $field['description']; ?></p>
         </div>
     <?php 
